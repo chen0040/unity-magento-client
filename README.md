@@ -31,6 +31,21 @@ StartCoroutine(MagentoService.Instance.DownloadRootCategory(rootCategory =>
 );
 ```
 
+### List Product Summary under a Category
+
+The sample code below shows how to download list all product summaries under a particular category 
+
+```cs
+long categoryId = 10;
+StartCoroutine(MagentoService.Instance.DownloadProductsInCategory(categoryId, (catId, products) => {
+	for(int i=0; i < 6 && i < products.Count; ++i)
+	{
+		CategoryProduct categoryProduct = products[i];
+		Debug.Log("Download products in category " + categoryId + ": " + categoryProduct.sku);
+		
+	}
+);
+```
 
 
 
