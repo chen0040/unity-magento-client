@@ -60,6 +60,18 @@ StartCoroutine(MagentoService.Instance.DownloadProductDetail(sku, (product) => {
 }));
 ```
 
+### Obtain list of medias under the product (images and videos)
+
+The sample code belwo shows how to download the media list under a product using its sku
+
+```cs
+StartCoroutine(MagentoService.Instance.DownloadProductMediaList(sku, (mediaList) => {
+	foreach(ProductMedia media in mediaList){
+		Debug.Log("type: " + media.media_type + "\tfilename: " + media.file);
+	}
+}));
+```
+
 
 
 

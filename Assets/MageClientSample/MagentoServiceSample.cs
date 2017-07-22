@@ -32,12 +32,22 @@ public class MagentoServiceSample : MonoBehaviour {
                 DownloadProductDetail(categoryProduct.sku);
                 if (i == 5)
                 {
+                    DownloadProductMedia(categoryProduct.sku);
                     /*
                     DownloadProductImage(categoryProduct.sku);
                     DownloadProductTexture(categoryProduct.sku);*/
                 }
             }
             
+        }));
+    }
+
+    private void DownloadProductMedia(string sku)
+    {
+        StartCoroutine(MagentoService.Instance.DownloadProductMediaList(sku, (mediaList) => {
+            foreach(ProductMedia media in mediaList){
+                Debug.Log("type: " + media.media_type + "\tfilename: " + media.file);
+            }
         }));
     }
 

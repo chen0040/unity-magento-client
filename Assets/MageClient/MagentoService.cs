@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 
 public delegate void CategoryDownloadCallback(Category category);
 public delegate void CategoryProductDownloadCallback(long categoryId, List<CategoryProduct> cpList);
+public delegate void ProductMediaListDownloadCallback(List<ProductMedia> pmList);
 public delegate void ProductDownloadCallback(Product p);
 public delegate void MagentoBinaryDownloadCallback(byte[] bytes);
 public delegate void MagentoTextureDownloadCallback(Texture2D texture);
@@ -57,6 +58,17 @@ public class MagentoService : MonoBehaviour {
         string json = cases.text;
 
         Product result = JsonConvert.DeserializeObject<Product>(json);
+        callback(result);
+    }
+
+    public IEnumerator DownloadProductMediaList(string sku, ProductMediaListDownloadCallback callback)
+    {
+        WWW cases = new WWW(baseUrl + "/rest/V1/products/" + EncodeUriComponent(sku) + "/media");
+        yield return cases;
+
+        string json = cases.text;
+
+        List<ProductMedia> result = JsonConvert.DeserializeObject<List<ProductMedia>>(json);
         callback(result);
     }
 
