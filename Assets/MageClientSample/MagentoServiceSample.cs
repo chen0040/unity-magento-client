@@ -17,10 +17,8 @@ public class MagentoServiceSample : MonoBehaviour {
                 Debug.Log("Downloaded category: " + c.name + " (id: " + c.id + ")");
             }
 
-            /*
+            
             DownloadProductsInCategory(categories[0].id);
-            DownloadCategoryImage(categories[0].id);
-            DownloadCategoryTexture(categories[0].id);*/
         }));
 	}
 
@@ -34,8 +32,9 @@ public class MagentoServiceSample : MonoBehaviour {
                 DownloadProductDetail(categoryProduct.sku);
                 if (i == 5)
                 {
+                    /*
                     DownloadProductImage(categoryProduct.sku);
-                    DownloadProductTexture(categoryProduct.sku);
+                    DownloadProductTexture(categoryProduct.sku);*/
                 }
             }
             
@@ -63,21 +62,6 @@ public class MagentoServiceSample : MonoBehaviour {
         StartCoroutine(MagentoService.Instance.DownloadProductTexture(sku, (texture) =>
         {
             Debug.Log("texture for product " + sku + " is " + (texture != null));
-        }));
-    }
-
-    private void DownloadCategoryImage(long categoryId)
-    {
-        StartCoroutine(MagentoService.Instance.GetCategoryImage(categoryId, (bytes) => {
-            Debug.Log("Bytes for category " + categoryId + " is " + bytes.Length);
-        }));
-    }
-
-    private void DownloadCategoryTexture(long categoryId)
-    {
-        StartCoroutine(MagentoService.Instance.GetCategoryTexture(categoryId, (texture) =>
-        {
-            Debug.Log("texture for category " + categoryId + " is " + (texture != null));
         }));
     }
 

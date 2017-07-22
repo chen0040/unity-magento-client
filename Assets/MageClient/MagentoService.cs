@@ -39,7 +39,7 @@ public class MagentoService : MonoBehaviour {
 
     public IEnumerator DownloadProductsInCategory(long categoryId, CategoryProductDownloadCallback callback)
     {
-        WWW cases = new WWW(baseUrl + "//magento/categories/" + categoryId + "/products");
+        WWW cases = new WWW(baseUrl + "/rest/V1/categories/" + categoryId + "/products");
         yield return cases;
 
         string json = cases.text;
@@ -51,7 +51,7 @@ public class MagentoService : MonoBehaviour {
 
     public IEnumerator DownloadProductDetail(string sku, ProductDownloadCallback callback)
     {
-        WWW cases = new WWW(baseUrl + "/magento/products/" + EncodeUriComponent(sku));
+        WWW cases = new WWW(baseUrl + "/rest/V1/products/" + EncodeUriComponent(sku));
         yield return cases;
 
         string json = cases.text;
@@ -78,24 +78,6 @@ public class MagentoService : MonoBehaviour {
         callback(cases.texture);
     }
 
-    public IEnumerator GetCategoryImage(long categoryId, MagentoBinaryDownloadCallback callback)
-    {
-        WWW cases = new WWW(baseUrl + "/magento/categories/" + categoryId + "/icon");
-        yield return cases;
-
-        byte[] bytes = cases.bytes;
-
-        callback(bytes);
-    }
-
-    public IEnumerator GetCategoryTexture(long categoryId, MagentoTextureDownloadCallback callback)
-    {
-        WWW cases = new WWW(baseUrl + "/magento/categories/" + categoryId + "/icon");
-        yield return cases;
-
-        callback(cases.texture);
-    }
-	
 	// Update is called once per frame
 	void Update () {
 	
