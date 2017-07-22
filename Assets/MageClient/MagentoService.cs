@@ -9,6 +9,7 @@ public delegate void ProductMediaListDownloadCallback(List<ProductMedia> pmList)
 public delegate void ProductDownloadCallback(Product p);
 public delegate void MagentoBinaryDownloadCallback(byte[] bytes);
 public delegate void MagentoTextureDownloadCallback(Texture2D texture);
+public delegate void StringListDownloadCallback(List<string> texts);
 
 public class MagentoService : MonoBehaviour {
 
@@ -72,22 +73,96 @@ public class MagentoService : MonoBehaviour {
         callback(result);
     }
 
-    public IEnumerator DownloadProductImage(string sku, MagentoBinaryDownloadCallback callback)
+    public IEnumerator DownloadProductImageUrlList(string sku, StringListDownloadCallback callback)
     {
-        WWW cases = new WWW(baseUrl + "/product-img/" + EncodeUriComponent(sku));
+        WWW cases = new WWW(baseUrl + "/rest/V1/products/" + EncodeUriComponent(sku) + "/media");
         yield return cases;
 
-        byte[] bytes = cases.bytes;
+        string json = cases.text;
 
-        callback(bytes);
+        List<ProductMedia> mediaList = JsonConvert.DeserializeObject<List<ProductMedia>>(json);
+        List<string> result = new List<string>();
+
+        foreach (ProductMedia media in mediaList)
+        {
+            if (media.media_type == "image")
+            {
+                string url = baseUrl + "/pub/media/catalog/product/" + media.file;
+                result.Add(url);
+            }
+        }
+
+
+        callback(result);
     }
 
-    public IEnumerator DownloadProductTexture(string sku, MagentoTextureDownloadCallback callback)
+    public IEnumerable DownloadProductVideoUrlList(string sku, StringListDownloadCallback callback)
     {
-        WWW cases = new WWW(baseUrl + "/product-img/" + EncodeUriComponent(sku));
+        WWW cases = new WWW(baseUrl + "/rest/V1/products/" + EncodeUriComponent(sku) + "/media");
         yield return cases;
 
-        callback(cases.texture);
+        string json = cases.text;
+
+        List<ProductMedia> mediaList = JsonConvert.DeserializeObject<List<ProductMedia>>(json);
+        List<string> result = new List<string>();
+
+        foreach (ProductMedia media in mediaList)
+        {
+            if (media.media_type == "video")
+            {
+                string url = baseUrl + "/pub/media/catalog/product/" + media.file;
+                result.Add(url);
+            }
+        }
+
+
+        callback(result);
+    }
+
+    public IEnumerator DownloadProductImages(string sku, MagentoBinaryDownloadCallback callback)
+    {
+        WWW cases = new WWW(baseUrl + "/rest/V1/products/" + EncodeUriComponent(sku) + "/media");
+        yield return cases;
+
+        string json = cases.text;
+
+        List<ProductMedia> mediaList = JsonConvert.DeserializeObject<List<ProductMedia>>(json);
+
+        foreach (ProductMedia media in mediaList)
+        {
+            if (media.media_type == "image")
+            {
+                string url = baseUrl + "/pub/media/catalog/product/" + media.file;
+                cases = new WWW(url);
+                yield return cases;
+
+                byte[] bytes = cases.bytes;
+
+                callback(bytes);
+            }
+        }
+    }
+
+    public IEnumerator DownloadProductTextures(string sku, MagentoTextureDownloadCallback callback)
+    {
+        WWW cases = new WWW(baseUrl + "/rest/V1/products/" + EncodeUriComponent(sku) + "/media");
+        yield return cases;
+
+        string json = cases.text;
+
+        List<ProductMedia> mediaList = JsonConvert.DeserializeObject<List<ProductMedia>>(json);
+
+        foreach (ProductMedia media in mediaList)
+        {
+            if (media.media_type == "image")
+            {
+                string url = baseUrl + "/pub/media/catalog/product/" + media.file;
+                cases = new WWW(url);
+                yield return cases;
+
+                callback(cases.texture);
+            }
+        }
     }
 
 	// Update is called once per frame

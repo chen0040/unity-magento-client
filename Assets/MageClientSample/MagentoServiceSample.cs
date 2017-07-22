@@ -32,21 +32,21 @@ public class MagentoServiceSample : MonoBehaviour {
                 DownloadProductDetail(categoryProduct.sku);
                 if (i == 5)
                 {
-                    DownloadProductMedia(categoryProduct.sku);
-                    /*
-                    DownloadProductImage(categoryProduct.sku);
-                    DownloadProductTexture(categoryProduct.sku);*/
+                    DownloadProductImageUrlList(categoryProduct.sku);
+                    DownloadProductImages(categoryProduct.sku);
+                    DownloadProductTextures(categoryProduct.sku);
                 }
             }
             
         }));
     }
 
-    private void DownloadProductMedia(string sku)
+    private void DownloadProductImageUrlList(string sku)
     {
-        StartCoroutine(MagentoService.Instance.DownloadProductMediaList(sku, (mediaList) => {
-            foreach(ProductMedia media in mediaList){
-                Debug.Log("type: " + media.media_type + "\tfilename: " + media.file);
+        StartCoroutine(MagentoService.Instance.DownloadProductImageUrlList(sku, (urls) =>
+        {
+            foreach(string url in urls){
+                Debug.Log(url);
             }
         }));
     }
@@ -60,16 +60,16 @@ public class MagentoServiceSample : MonoBehaviour {
         }));
     }
 
-    private void DownloadProductImage(string sku)
+    private void DownloadProductImages(string sku)
     {
-        StartCoroutine(MagentoService.Instance.DownloadProductImage(sku, (bytes) => {
+        StartCoroutine(MagentoService.Instance.DownloadProductImages(sku, (bytes) => {
             Debug.Log("Bytes for product " + sku + " is " + bytes.Length);
         }));
     }
 
-    private void DownloadProductTexture(string sku)
+    private void DownloadProductTextures(string sku)
     {
-        StartCoroutine(MagentoService.Instance.DownloadProductTexture(sku, (texture) =>
+        StartCoroutine(MagentoService.Instance.DownloadProductTextures(sku, (texture) =>
         {
             Debug.Log("texture for product " + sku + " is " + (texture != null));
         }));
