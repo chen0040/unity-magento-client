@@ -42,9 +42,22 @@ StartCoroutine(MagentoService.Instance.DownloadProductsInCategory(categoryId, (c
 	{
 		CategoryProduct categoryProduct = products[i];
 		Debug.Log("Download products in category " + categoryId + ": " + categoryProduct.sku);
-		
+		// use the sku to retrieve the product detail here 
 	}
 );
+```
+
+### Obtain detail of a product given its SKU
+
+The sample code below shows to download the product detail associated with a particular sku 
+
+```cs
+string sku = "product_dynamic_17";
+StartCoroutine(MagentoService.Instance.DownloadProductDetail(sku, (product) => {
+	Debug.Log("Name for sku " + product.sku + ": " + product.name);
+	Debug.Log("Price for sku " + product.sku + ": " + product.price);
+	Debug.Log("Weight for sku " + product.sku + ": " + product.weight);
+}));
 ```
 
 
