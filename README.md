@@ -4,7 +4,7 @@ Magento client implemented in Unity3D
 
 # Install
 
-Git clone this project and export it as a unity package, then import the package into your own project.
+Git clone this project and export it as a unity package, then import the package into your own project. The sample code can be found in the folder MageClientSample/MagentoServiceSample.cs 
 
 # Usage
 
@@ -75,7 +75,34 @@ StartCoroutine(MagentoService.Instance.DownloadProductMediaList(sku, (mediaList)
 If you prefer to get the list of image urls instead of the ProductMedia List as given by the above api call, the sample code below shows how to obtains urls of all images associated with a product using its sku 
 
 ```cs
+StartCoroutine(MagentoService.Instance.DownloadProductImageUrlList(sku, (urls) =>
+{
+	foreach(string url in urls){
+		Debug.Log(url);
+	}
+}));
+```
 
+### Obtain a byte array for each image under a product
+
+The sample code below shows how to download all the image byte arrays under a product using its sku
+
+```cs
+string sku = "product_dynamic_17";
+StartCoroutine(MagentoService.Instance.DownloadProductImages(sku, (bytes) => {
+	Debug.Log("Bytes for product " + sku + " is " + bytes.Length);
+}));
+```
+
+### Obtain a texture for each image under a product
+
+The sample code below shows how to download all the image textures under a product using its sku
+
+```cs
+string sku = "product_dynamic_17";
+StartCoroutine(MagentoService.Instance.DownloadProductTextures(sku, (texture) => {
+	Debug.Log("texture for product " + sku + " is " + (texture != null));
+}));
 ```
 
 
